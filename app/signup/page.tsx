@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FormState {
   hospitalName: string;
@@ -62,21 +64,22 @@ const Register = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || `Error: ${res.status}`);
+        toast.error(data.message || `Error: ${res.status}`);
         return;
       }
 
-      alert(data.message || 'Registration successful!');
+      toast.success(data.message || 'Registration successful!');
       setForm({ hospitalName: '', email: '', password: '' });
       setTimeout(() => navigate.push('/signin'), 2000);
     } catch (err) {
       console.error(err);
-      alert('Network error, please try again later');
+      toast.error('Network error, please try again later');
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 flex lg:items-center lg:justify-center lg:px-4">
+      <ToastContainer/>
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg max-w-md w-full p-8" noValidate>
         <h2 className="text-4xl font-bold text-gray-900 text-center mt-26 lg:mt-5 mb-20 lg:mb-10">Register Hospital</h2>
 

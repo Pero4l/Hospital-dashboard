@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FormState {
   email: string;
@@ -49,16 +51,16 @@ const Login = () => {
 
     try {
       const response = await axios.post('https://test.blockfuselabs.com/api/login', form);
-      alert(response.data.message || "Login successful!");
+      toast.success(response.data.message || "Login successful!");
       setTimeout(() => {
         navigate.push('/dashboard');
       }, 1000);
      
     } catch (error: any) {
       if (error.response) {
-        alert(error.response.data.message || "Something went wrong");
+        toast.error(error.response.data.message || "Something went wrong");
       } else {
-        alert("Network error, please try again later");
+        toast.error("Network error, please try again later");
       }
     } finally {
       setLoading(false);
@@ -67,6 +69,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 flex lg:items-center justify-center lg:px-4">
+      <ToastContainer />
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-lg shadow-lg max-w-md w-full p-8"
